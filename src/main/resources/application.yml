@@ -1,0 +1,51 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: email-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/findify_emails?createDatabaseIfNotExist=true
+    username: root
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  jpa.properties.hibernate.format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: laknathoki@gmail.com
+    password: mvst dtte mxze srgh # Use App Password, not regular password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connection-timeout: 5000
+          timeout: 5000
+          write-timeout: 5000
+
+# Logging Configuration
+logging:
+  level:
+    edu.icet.ecom: DEBUG
+    org.springframework.mail: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
