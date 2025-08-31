@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: chat-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/findify_chat_db?createDatabaseIfNotExist=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  security:
+    user:
+      name: admin
+      password: admin123
+
+# JWT Configuration - MUST MATCH USER SERVICE
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000
+
+# External Services
+services:
+  user-service: http://localhost:8081
+
+# Server Configuration
+server:
+  port: 8087
+
+# Logging Configuration
+logging:
+  level:
+    edu.icet.ecom: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.messaging: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# Management endpoints for health check
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
