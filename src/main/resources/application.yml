@@ -1,0 +1,83 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: claimed-item-service
+
+  # Database Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/claimed_items_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      leak-detection-threshold: 60000
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        use_sql_comments: false
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+# Feign Configuration
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 10000
+        loggerLevel: basic
+      email-service:
+        connectTimeout: 3000
+        readTimeout: 8000
+      item-service:
+        connectTimeout: 4000
+        readTimeout: 8000
+      image-tracking-service:
+        connectTimeout: 10000
+        readTimeout: 30000
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Logging
+logging:
+  level:
+    edu.icet.ecom: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    feign: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Custom application properties
+app:
+  claim:
+    expiration-days: 30
+    similarity-threshold: 0.65
+    cleanup-schedule: "0 0 2 * * *" # Daily at 2 AM
+    batch-size: 50
