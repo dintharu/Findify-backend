@@ -1,3 +1,128 @@
+##spring:
+##  application:
+##    name: chat-service
+##  datasource:
+##    url: jdbc:mysql://localhost:3306/findify_chat_db?createDatabaseIfNotExist=true
+##    username: root
+##    password: 1234
+##    driver-class-name: com.mysql.cj.jdbc.Driver
+##  jpa:
+##    hibernate:
+##      ddl-auto: update
+##    show-sql: true
+##    properties:
+##      hibernate:
+##        format_sql: true
+##        dialect: org.hibernate.dialect.MySQL8Dialect
+##  security:
+##    user:
+##      name: admin
+##      password: admin123
+##
+### JWT Configuration - MUST MATCH USER SERVICE
+##application:
+##  security:
+##    jwt:
+##      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+##      expiration: 86400000
+##
+### External Services
+##services:
+##  user-service: http://localhost:8080
+##
+### Server Configuration
+##server:
+##  port: 8087
+##
+### Logging Configuration
+##logging:
+##  level:
+##    edu.icet.ecom: DEBUG
+##    org.springframework.security: DEBUG
+##    org.springframework.messaging: DEBUG
+##    org.hibernate.SQL: DEBUG
+##    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+##
+### Management endpoints for health check
+##management:
+##  endpoints:
+##    web:
+##      exposure:
+##        include: health,info
+##  endpoint:
+##    health:
+##      show-details: always
+#
+#spring:
+#  application:
+#    name: chat-service
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/findify_chat_db?createDatabaseIfNotExist=true
+#    username: root
+#    password: 1234
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#
+## JWT Configuration - MUST EXACTLY MATCH USER SERVICE
+#application:
+#  security:
+#    jwt:
+#      # CRITICAL: This MUST be identical to user service
+#      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+#      # CRITICAL: This MUST be identical to user service
+#      expiration: 86400000
+#
+## External Services - FIXED URLs
+#services:
+#  user-service: http://localhost:8080
+#
+## Server Configuration
+#server:
+#  port: 8087
+#
+## ENHANCED: Logging Configuration for debugging
+#logging:
+#  level:
+#    edu.icet.ecom: DEBUG
+#    edu.icet.ecom.security: DEBUG
+#    edu.icet.ecom.client: DEBUG
+#    org.springframework.security: DEBUG
+#    org.springframework.messaging: DEBUG
+#    org.springframework.web: DEBUG
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    feign: DEBUG
+#
+## Management endpoints for health check
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,info
+#  endpoint:
+#    health:
+#      show-details: always
+#
+## CRITICAL: Feign client configuration
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 5000
+#        readTimeout: 5000
+#        loggerLevel: full
+#      user-service:
+#        connectTimeout: 10000
+#        readTimeout: 10000
+#        loggerLevel: full
+
 spring:
   application:
     name: chat-service
@@ -14,36 +139,38 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
-  security:
-    user:
-      name: admin
-      password: admin123
 
-# JWT Configuration - MUST MATCH USER SERVICE
+# CRITICAL: JWT Configuration - MUST EXACTLY MATCH USER SERVICE
 application:
   security:
     jwt:
+      # This MUST be identical to your user service secret key
+      # If your user service uses a different key, copy it exactly from there
       secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
       expiration: 86400000
 
 # External Services
 services:
-  user-service: http://localhost:8081
+  user-service: http://localhost:8080
 
 # Server Configuration
 server:
   port: 8087
 
-# Logging Configuration
+# ENHANCED: Debug logging
 logging:
   level:
     edu.icet.ecom: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.messaging: DEBUG
+    edu.icet.ecom.security.JwtTokenUtil: DEBUG
+    edu.icet.ecom.config.SecurityConfig: DEBUG
+    org.springframework.security: INFO
+    org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    feign: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
 
-# Management endpoints for health check
+# Management endpoints
 management:
   endpoints:
     web:
@@ -52,3 +179,16 @@ management:
   endpoint:
     health:
       show-details: always
+
+# Feign client configuration
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+      user-service:
+        connectTimeout: 10000
+        readTimeout: 10000
+        loggerLevel: full
