@@ -25,5 +25,6 @@ public class ChatMessageRequest {
     private MessageType messageType = MessageType.TEXT;
     private String attachmentUrl;
     private String attachmentName;
+    private String senderEmail;
 
 }
