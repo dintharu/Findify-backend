@@ -1,4 +1,3 @@
-// Corrected ClaimedItem.java
 package edu.icet.ecom.model.entity;
 
 import edu.icet.ecom.enums.ClaimStatus;
@@ -38,10 +37,13 @@ public class ClaimedItem {
     @Column(name = "found_item_title", length = 500)
     private String foundItemTitle;
 
-    @Column(name = "lost_item_image_url", length = 2000)
+    // FIXED: Use LONGTEXT for image URLs to handle large base64 data
+    @Lob
+    @Column(name = "lost_item_image_url", columnDefinition = "LONGTEXT")
     private String lostItemImageUrl;
 
-    @Column(name = "found_item_image_url", length = 2000)
+    @Lob
+    @Column(name = "found_item_image_url", columnDefinition = "LONGTEXT")
     private String foundItemImageUrl;
 
     @Column(name = "lost_item_user_id", length = 50)
@@ -62,10 +64,10 @@ public class ClaimedItem {
     @Column(name = "claimer_email", nullable = false, length = 100)
     private String claimerEmail;
 
-    @Column(name = "claim_reason", length = 2000)
+    @Lob
+    @Column(name = "claim_reason", columnDefinition = "TEXT")
     private String claimReason;
 
-    // FIXED: Removed precision and scale for Double type
     @Column(name = "similarity_score")
     private Double similarityScore;
 
@@ -98,7 +100,7 @@ public class ClaimedItem {
             claimedAt = now;
         }
         if (expiresAt == null) {
-            expiresAt = claimedAt.plusDays(30); // Default 30 days expiration
+            expiresAt = claimedAt.plusDays(30);
         }
         if (claimStatus == null) {
             claimStatus = ClaimStatus.ACTIVE;
