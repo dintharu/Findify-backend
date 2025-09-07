@@ -20,4 +20,7 @@ public class ItemDto {
     private String itemType; // LOST or FOUND
     private String location;
     private LocalDateTime createdAt;
+
+    private ContactInfo contactInfo;
+
 }

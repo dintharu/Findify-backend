@@ -7,6 +7,6 @@ public interface ImageSimilarityIntegrationService {
 
     void checkForMatchesAfterLostItemCreated(LostItemResponse lostItem);
     void checkForMatchesAfterFoundItemCreated(FoundItemResponse foundItem);
-    String getUserEmail(Long userId);
+  //  String getUserEmail(Long userId);
 
 }
